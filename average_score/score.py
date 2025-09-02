@@ -2,7 +2,6 @@
 import sys
 import csv
 
-
 def load_from_csv(filepath):
     """
     Read students' names and scores from given 
@@ -27,7 +26,16 @@ def subject_average(student_scores: dict, subjects: list):
     이 반의 각 과목별 평균을 구해서 딕셔너리로 반환
     예) {"국어": 80.8, "수학": 35.3, "영어": 96.6, "과학": 85.3, "사회": 38.8}
     """
-    pass
+    subject_dict = {}
+    for subject in subjects :
+        subject_dict[subject] = 0
+
+    for student_score in student_scores.values() :
+        for i, s in enumerate(subjects) :
+            subject_dict[s] += int(student_score[i])
+    for k, v in subject_dict.items() :
+        subject_dict[k] = round(v/len(student_scores),2)
+    return subject_dict
 
 
 def student_average(student_scores: dict):
@@ -35,8 +43,10 @@ def student_average(student_scores: dict):
     각 학생별 전과목 평균 점수를 정렬된 튜플의 리스트로 반환
     예) [("이영희", 89.8), ("김철수", 86.6), ("박민수", 84.8)]
     """
-    pass
-
+    li = []
+    for k, s in student_scores.items() :
+        li.append((k, eval('+'.join(s))/len(s)))
+    return sorted(li, key=lambda x : x[1], reverse= True)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
